@@ -5,7 +5,7 @@ const connection = mysql.createConnection({
     port: 3306,
     user: process.env.DB_USER,
     password: process.env.DB_PW,
-    database: "sandbox_db"
+    database: "employees"
   });
   
   connection.connect(function(err) {
