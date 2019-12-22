@@ -1,3 +1,4 @@
+{{#if employees}}
 <ul>
     {{#each employees}}
     <li>
@@ -5,8 +6,32 @@
         <p>Name: {{this.first_name}} {{this.last_name}}</p>
         <p>Role ID: {{this.role_id}}</p>
         {{#if this.manager_id}}
-        <h1>{{this.manager_id}}</h1>
+        <p>Manager ID: {{this.manager_id}}</p>
         {{/if}}
     </li>
     {{/each}}
 </ul>
+{{/if}}
+
+{{#if role}}
+<ul>
+    {{#each role}}
+    <li>
+        <p>ID: {{this.id}}</p>
+        <p>Title: {{this.title}}</p>
+        <p>Salary: {{this.salary}}</p>
+    </li>
+    {{/each}}
+</ul>
+{{/if}}
+
+{{#if department}}
+<ul>
+    {{#each department}}
+    <li>
+        <p>ID: {{this.id}}</p>
+        <p>Name: {{this.name}}</p>
+    </li>
+    {{/each}}
+</ul>
+{{/if}}

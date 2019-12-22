@@ -1,0 +1,14 @@
+<ul>
+    {{#each all}}
+    <li>
+        <p>ID: {{this.id}}</p>
+        <p>Name: {{this.first_name}} {{this.last_name}}</p>
+        <p>Title: {{this.title}}</p>
+        <p>Department: {{this.department}}</p>
+        <p>Salary: {{this.salary}}</p>
+        {{#if this.manager_id}}
+        <p>Manager ID: {{this.manager_id}}</p>
+        {{/if}}
+    </li>
+    {{/each}}
+</ul>
