@@ -7,7 +7,7 @@ router.get("/employee", function(req, res) {
     if (err) {
       return res.status(500).end();
     }
-    console.log(data);
+    // console.log(data);
     res.render("index", { employees: data });
   });
 });
@@ -17,7 +17,7 @@ router.get("/role", function(req, res) {
     if (err) {
       return res.status(500).end();
     }
-    console.log(data);
+    // console.log(data);
     res.render("index", { role: data });
   });
 });
@@ -27,7 +27,7 @@ router.get("/department", function(req, res) {
     if (err) {
       return res.status(500).end();
     }
-    console.log(data);
+    // console.log(data);
     res.render("index", { department: data });
   });
 });
@@ -37,7 +37,7 @@ router.get("/all", function(req, res) {
     if (err) {
       return res.status(500).end();
     }
-    console.log(data);
+    // console.log(data);
     res.render("all", { all: data });
   });
 });

@@ -14,32 +14,32 @@
 
 <h2>Add an Employee</h2>
 <form id="addemployee" class="button-size">
-  <input type="text" name="employeefirstname" placeholder="First Name..."></input>
-  <input type="text" name="employeelastname" placeholder="Last Name..."></input>
-  <input type="text" name="employeeroleid" placeholder="Role ID..."></input>
-  <input type="text" name="employeemanagerid" placeholder="Manager ID..."></input>
-  <button type="submit">Save Employee!</button>
+    <input type="text" name="employeefirstname" placeholder="First Name..."></input>
+    <input type="text" name="employeelastname" placeholder="Last Name..."></input>
+    <input type="text" name="employeeroleid" placeholder="Role ID..."></input>
+    <input type="text" name="employeemanagerid" placeholder="Manager ID..."></input>
+    <button type="submit">Save Employee!</button>
 </form>
 
 <h2>Update an Employee's Role</h2>
 <form id="updateemployee" class="button-size">
-  <select name="id">
-		{{#each employees}}
-			<option value="{{this.id}}">{{this.first_name}} {{this.last_name}}</option>
-		{{/each}}
-	</select>
-  <input type="text" name="employee" placeholder="New employee role..."></input>
-  <button type="submit">Update Employee!</button>
+    <select name="id">
+        {{#each employees}}
+        <option value="{{this.id}}">{{this.first_name}} {{this.last_name}}</option>
+        {{/each}}
+    </select>
+    <input type="text" name="updateemployeeroleid" placeholder="New employee role ID..."></input>
+    <button type="submit">Update Employee!</button>
 </form>
 
 <h2>Delete an Employee</h2>
-<form id="updateemployee" class="button-size">
-  <select name="id">
-		{{#each employees}}
-			<option value="{{this.id}}">{{this.first_name}} {{this.last_name}}</option>
-		{{/each}}
-	</select>
-  <button type="submit">Delete an Employee!</button>
+<form id="deleteemployee" class="button-size">
+    <select name="delemployeeid">
+        {{#each employees}}
+        <option value="{{this.id}}">{{this.first_name}} {{this.last_name}}</option>
+        {{/each}}
+    </select>
+    <button type="submit">Delete an Employee!</button>
 </form>
 {{/if}}
 
@@ -58,20 +58,20 @@
 
 <h2>Add a Role</h2>
 <form id="addrole" class="button-size">
-  <input type="text" name="rolename" placeholder="Title..."></input>
-  <input type="text" name="rolesalary" placeholder="Salary..."></input>
-  <input type="text" name="roledepartmentid" placeholder="Department ID..."></input>
-  <button type="submit">Save Role!</button>
+    <input type="text" name="rolename" placeholder="Title..."></input>
+    <input type="text" name="rolesalary" placeholder="Salary..."></input>
+    <input type="text" name="roledepartmentid" placeholder="Department ID..."></input>
+    <button type="submit">Save Role!</button>
 </form>
 
 <h2>Delete a Role</h2>
 <form id="deleterole" class="button-size">
-  <select name="id">
-		{{#each role}}
-			<option value="{{this.id}}">{{this.title}}</option>
-		{{/each}}
-	</select>
-  <button type="submit">Delete a Role!</button>
+    <select name="delroleid">
+        {{#each role}}
+        <option value="{{this.id}}">{{this.title}}</option>
+        {{/each}}
+    </select>
+    <button type="submit">Delete a Role!</button>
 </form>
 {{/if}}
 
@@ -89,17 +89,87 @@
 
 <h2>Add a Department</h2>
 <form id="adddepartment" class="button-size">
-  <input type="text" name="departmentname" placeholder="Department Name..."></input>
-  <button type="submit">Save Department!</button>
+    <input type="text" name="departmentname" placeholder="Department Name..."></input>
+    <button type="submit">Save Department!</button>
 </form>
 
 <h2>Delete a Department</h2>
 <form id="deletedepartment" class="button-size">
-  <select name="id">
-		{{#each department}}
-			<option value="{{this.id}}">{{this.name}}</option>
-		{{/each}}
-	</select>
-  <button type="submit">Delete a Department!</button>
+    <select name="deldepartmentid">
+        {{#each department}}
+        <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+    </select>
+    <button type="submit">Delete a Department!</button>
 </form>
 {{/if}}
+
+<script type="text/javascript">
+    $(".deleteemployee").on("click", function (event) {
+        // Get the ID from the button.
+        // This is shorthand for $(this).attr("data-planid")
+        var id = $(this).data("planid");
+
+        // Send the DELETE request.
+        $.ajax("/api/employee/" + id, {
+            type: "DELETE"
+        }).then(
+            function () {
+                console.log("deleted id ", id);
+                // Reload the page to get the updated list
+                location.reload();
+            }
+        );
+    });
+
+    $("#addemployee").on("submit", function (event) {
+        // Make sure to preventDefault on a submit event.
+        event.preventDefault();
+
+        // [name=plan] will find an element with a "name" attribute equal to the string "plan"
+        var newPlan = {
+            plan: $("#createplan [name=plan]").val().trim()
+        };
+
+        // Send the POST request.
+        $.ajax("/api/plans", {
+            type: "POST",
+            data: newPlan
+        }).then(
+            function () {
+                console.log("created new plan");
+                // Reload the page to get the updated list
+                location.reload();
+            }
+        );
+    });
+
+    $("#updateemployee").on("submit", function (event) {
+        // Make sure to preventDefault on a submit event.
+        event.preventDefault();
+        console.log("Updating employee");
+        // Get the ID by finding an element with a "name" attribute equal to the string "id"
+        var id = $("#updateemployee [name=updateemployeeroleid]").val();
+        var empid = $("#updateemployee [name=id] option:selected").val();
+        console.log("This is the id " + id);
+        console.log("this is the employees id " + empid);
+
+        var updatedemployeeroleid = {
+            role_id: $("#updateemployee [name=updateemployeeroleid]").val(),
+            employeeid: $("#updateemployee [name=id] option:selected").val()
+        };
+        console.log(updatedemployeeroleid);
+
+        // Send the PUT request.
+        $.ajax("/api/employee/" + id, {
+            type: "PUT",
+            data: updatedemployeeroleid
+        }).then(
+            function () {
+                console.log("updated id ", id);
+                // Reload the page to get the updated list
+                location.reload();
+            }
+        );
+    });
+</script>
